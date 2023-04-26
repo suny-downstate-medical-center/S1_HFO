@@ -197,6 +197,15 @@ for cellName in cfg.S1cells:
                 netParams.cellParams[cellMe]['secs'][section]['geom']['pt3d'][ipt] = (x * c - z * s, y, x * s + z * c, d)
 
 #------------------------------------------------------------------------------
+# create custom list of spike times
+#------------------------------------------------------------------------------
+for ii in range(5):
+    dd = ii*0.2
+    spkTimes = [tt+dd for tt in range(990,1028,5)]
+    # print(spkTimes)
+    netParams.popParams['stimL5'+str(ii)] = {'cellModel': 'VecStim', 'numCells': 10, 'ynormRange': layer['5'], 'spkTimes': spkTimes}  # VecStim with spike times
+
+#------------------------------------------------------------------------------
 # load data from S1 conn pre-processing file 
 #------------------------------------------------------------------------------
 with open('conn/conn.pkl', 'rb') as fileObj: connData = pickle.load(fileObj)
@@ -568,6 +577,18 @@ if cfg.addConn:
                             'synsPerConn': int(synperconnNumber[pre][post]+0.5),
                             'sec': 'spinyEE'} 
 
+                        
+                        if 'L5_TTPC' == pre[0:7]:   
+                            netParams.connParams['EE2_'+pre+'_'+post] = { 
+                                'preConds': {'pop': ['stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54']}, 
+                                'postConds': {'pop': cfg.popLabelEl[post]},
+                                'synMech': synMechType,
+                                'probability': 0.5, #########################################
+                                'weight': parameters_syn['gsyn',connID], 
+                                'delay': 'defaultDelay+dist_3D/propVelocity',
+                                'synsPerConn': int(synperconnNumber[pre][post]+0.5),
+                                'sec': 'spinyEE'}    
+
                 #------------------------------------------------------------------------------               
                 #  E -> I  with ME conn diversity
                 #------------------------------------------------------------------------------   
@@ -618,7 +639,18 @@ if cfg.addConn:
                                         'delay': 'defaultDelay+dist_3D/propVelocity',
                                         'synsPerConn': int(synperconnNumber[pre][post]+0.5),
                                         'sec': 'spiny'}  
-
+                        
+                        if 'L5_TTPC' == pre[0:7]:   
+                            netParams.connParams['EI2_'+pre+'_'+post] = { 
+                                            'preConds': {'pop': ['stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54']}, 
+                                            'postConds': {'pop': cellpostList_A},
+                                            'synMech': synMechType,
+                                            'probability': 1.0,  #####################################
+                                            'weight': parameters_syn['gsyn',connID], 
+                                            'delay': 'defaultDelay+dist_3D/propVelocity',
+                                            'synsPerConn': int(synperconnNumber[pre][post]+0.5),
+                                            'sec': 'spiny'} 
+                                       
                         if connID_B >= 0:          
                             connID = connID_B
                             synMechType = 'S1_EI_STP_Det_' + str(connID)        
@@ -641,6 +673,17 @@ if cfg.addConn:
                                             'delay': 'defaultDelay+dist_3D/propVelocity',
                                             'synsPerConn': int(synperconnNumber[pre][post]+0.5),
                                             'sec': 'spiny'}   
+                            
+                            if 'L5_TTPC' == pre[0:7]:   
+                                netParams.connParams['EI2_'+pre+'_'+post+'_B'] = { 
+                                                'preConds': {'pop': ['stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54']}, 
+                                                'postConds': {'pop': cellpostList_B},
+                                                'synMech': synMechType,
+                                                'probability': 1.0, #####################################
+                                                'weight': parameters_syn['gsyn',connID], 
+                                                'delay': 'defaultDelay+dist_3D/propVelocity',
+                                                'synsPerConn': int(synperconnNumber[pre][post]+0.5),
+                                                'sec': 'spiny'}   
 
 #------------------------------------------------------------------------------
 # NetStim inputs to simulate Spontaneous synapses + background in S1 neurons - data from Rat
@@ -769,5 +812,6 @@ netParams.description = """
 - v106 - 'e_GABAA': -70.0 (only to excitatory L5 neurons)
 - v107 - 'e_GABAA': -80.0 (but excitatory-excitatory L5 conn 1.25*strength basal)
 - v108 - 'e_GABAA': -80.0 (but excitatory-excitatory L5 conn 1.50*strength basal)
-- v109 - test
+- v109 - v101 with more cell traces recorded
+- v110 - only L5 + stim 200Hz
 """

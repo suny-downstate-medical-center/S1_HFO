@@ -44,7 +44,7 @@ for i,metype in enumerate(sim.net.cells):
         metype.tags['y'] = cellsTags[ii]['y']
         metype.tags['z'] = cellsTags[ii]['z']   
 
-    else:
+    elif 'stimL5' not in metype.tags['pop']:
         ii2 = int(0.000001+(metype.tags['fraction']/(1/cfg.Nmorpho[metype.tags['pop']])))  
 
         ii = cfg.listmorphonumber[metype.tags['pop']][ii2]
