@@ -199,11 +199,11 @@ for cellName in cfg.S1cells:
 #------------------------------------------------------------------------------
 # create custom list of spike times
 #------------------------------------------------------------------------------
-for ii in range(5):
-    dd = ii*0.2
-    spkTimes = [tt+dd for tt in range(990,1028,5)]
+for ii in range(cfg.Nstim_pop):
+    dd = ii*cfg.dtstimcells
+    spkTimes = [tt+dd for tt in range(1000,1030,5)]
     # print(spkTimes)
-    netParams.popParams['stimL5'+str(ii)] = {'cellModel': 'VecStim', 'numCells': 10, 'ynormRange': layer['5'], 'spkTimes': spkTimes}  # VecStim with spike times
+    netParams.popParams['stimL5'+str(ii)] = {'cellModel': 'VecStim', 'numCells': cfg.Nstim_cellsperpop, 'ynormRange': layer['5'], 'spkTimes': spkTimes}  # VecStim with spike times
 
 #------------------------------------------------------------------------------
 # load data from S1 conn pre-processing file 
@@ -426,6 +426,7 @@ if cfg.addConn:
                                         'delay': 'defaultDelay+dist_3D/propVelocity',
                                         'synsPerConn': int(synperconnNumber[pre][post]+0.5),
                                         'sec': 'spiny'}     
+
                 # ------------------------------------------------------------------------------
                 #  I -> E  # with ME conn diversity
                 # ------------------------------------------------------------------------------
@@ -583,7 +584,7 @@ if cfg.addConn:
                                 'preConds': {'pop': ['stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54']}, 
                                 'postConds': {'pop': cfg.popLabelEl[post]},
                                 'synMech': synMechType,
-                                'probability': 0.5, #########################################
+                                'probability': cfg.Nstim_probEE, #########################################
                                 'weight': parameters_syn['gsyn',connID], 
                                 'delay': 'defaultDelay+dist_3D/propVelocity',
                                 'synsPerConn': int(synperconnNumber[pre][post]+0.5),
@@ -645,7 +646,7 @@ if cfg.addConn:
                                             'preConds': {'pop': ['stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54']}, 
                                             'postConds': {'pop': cellpostList_A},
                                             'synMech': synMechType,
-                                            'probability': 1.0,  #####################################
+                                            'probability': cfg.Nstim_probEI,  #####################################
                                             'weight': parameters_syn['gsyn',connID], 
                                             'delay': 'defaultDelay+dist_3D/propVelocity',
                                             'synsPerConn': int(synperconnNumber[pre][post]+0.5),
@@ -679,7 +680,7 @@ if cfg.addConn:
                                                 'preConds': {'pop': ['stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54']}, 
                                                 'postConds': {'pop': cellpostList_B},
                                                 'synMech': synMechType,
-                                                'probability': 1.0, #####################################
+                                                'probability': cfg.Nstim_probEI, #####################################
                                                 'weight': parameters_syn['gsyn',connID], 
                                                 'delay': 'defaultDelay+dist_3D/propVelocity',
                                                 'synsPerConn': int(synperconnNumber[pre][post]+0.5),

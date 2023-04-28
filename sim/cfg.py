@@ -237,7 +237,7 @@ cfg.recordStep = 0.1
 #------------------------------------------------------------------------------
 # Saving
 #------------------------------------------------------------------------------
-cfg.simLabel = 'v110_batch0'       #   + str(cfg.cynradNumber)
+cfg.simLabel = 'v110_batch3'       #   + str(cfg.cynradNumber)
 cfg.saveFolder = '../data/'+cfg.simLabel
 # cfg.filename =                	## Set file output name
 cfg.savePickle = True	        	## Save pkl file
@@ -301,3 +301,12 @@ cfg.TC_S1 = {}
 cfg.TC_S1['VPL_sTC'] = True
 cfg.TC_S1['VPM_sTC'] = True
 cfg.TC_S1['POm_sTC_s1'] = True
+
+#------------------------------------------------------------------------------
+# create custom list of spike times cell type = 'L5_TTPC'
+#------------------------------------------------------------------------------
+cfg.Nstim_pop = 5
+cfg.Nstim_cellsperpop = 10
+cfg.dtstimcells = 0.1
+cfg.Nstim_probEE = 0.01
+cfg.Nstim_probEI = 0.01
