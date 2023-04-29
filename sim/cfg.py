@@ -25,7 +25,7 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 1.5*1e3 ## Duration of the sim, in ms  
+cfg.duration = 2.2*1e3 ## Duration of the sim, in ms  
 cfg.dt = 0.05
 cfg.seeds = {'conn': 4321, 'stim': 1000, 'loc': 4321} 
 cfg.hParams = {'celsius': 34, 'v_init': -69.5}  
@@ -180,19 +180,19 @@ for metype in  cfg.Nmorpho.keys(): # metype
 #------------------------------------------------------------------------------  
 #
 #------------------------------------------------------------------------------  
-cfg.popParamLabels = cfg.S1pops
-cfg.cellParamLabels = cfg.S1cells
-#------------------------------------------------------------------------------  
-#
-#------------------------------------------------------------------------------  
-subPopLabels = cfg.S1pops[28:41] # from 0 to 55 is full S1 -> L1:6 L23:10 L4:12 L5:13 L6:14
-# print(subPopLabels)
+# cfg.popParamLabels = cfg.S1pops
+# cfg.cellParamLabels = cfg.S1cells
+# #------------------------------------------------------------------------------  
+# #
+# #------------------------------------------------------------------------------  
+# subPopLabels = cfg.S1pops[28:41] # from 0 to 55 is full S1 -> L1:6 L23:10 L4:12 L5:13 L6:14
+# # print(subPopLabels)
 
-cfg.S1pops = subPopLabels
-cfg.S1cells = []
-for metype in cfg.cellParamLabels:
-    if cfg.popLabel[metype] in subPopLabels:        
-        cfg.S1cells.append(metype)
+# cfg.S1pops = subPopLabels
+# cfg.S1cells = []
+# for metype in cfg.cellParamLabels:
+#     if cfg.popLabel[metype] in subPopLabels:        
+#         cfg.S1cells.append(metype)
         
 cfg.thalamicpops = []
 
@@ -203,7 +203,7 @@ cfg.cellParamLabels = cfg.S1cells
 # Recording 
 #--------------------------------------------------------------------------
 cfg.allpops = cfg.cellParamLabels
-cfg.cellsrec = 0
+cfg.cellsrec = 2
 if cfg.cellsrec == 0:  cfg.recordCells = cfg.allpops # record all cells
 elif cfg.cellsrec == 1: cfg.recordCells = [(pop,0) for pop in cfg.allpops] # record one cell of each pop
 elif cfg.cellsrec == 2: # record one cell of each cellMEtype # need more test!!!
@@ -237,7 +237,7 @@ cfg.recordStep = 0.1
 #------------------------------------------------------------------------------
 # Saving
 #------------------------------------------------------------------------------
-cfg.simLabel = 'v110_batch3'       #   + str(cfg.cynradNumber)
+cfg.simLabel = 'v110_batch5'       #   + str(cfg.cynradNumber)
 cfg.saveFolder = '../data/'+cfg.simLabel
 # cfg.filename =                	## Set file output name
 cfg.savePickle = True	        	## Save pkl file
@@ -268,7 +268,7 @@ cfg.analysis['plotRaster'] = {'include': cfg.S1cells, 'saveFig': True, 'showFig'
 
 # cfg.analysis['plot2Dnet']   = {'include': ['presyn_L23_PC_cAD', 'presyn_VPM_sTC','L23_PC_cAD','presyn_L5_TTPC2_cAD', 'L5_TTPC2_cAD','stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54'], 'saveFig': True, 'showConns': False, 'figSize': (24,24), 'view': 'xz', 'fontSize':16}   # Plot 2D cells xz
                  
-cfg.analysis['plot2Dnet']   = {'include': ['presyn_L23_PC_cAD', 'presyn_VPM_sTC','L23_PC_cAD','presyn_L5_TTPC2_cAD', 'L5_TTPC2_cAD','stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54'], 'saveFig': True, 'showConns': False, 'figSize': (24,24), 'view': 'xy', 'fontSize':16}   # Plot 2D cells xz
+# cfg.analysis['plot2Dnet']   = {'include': ['presyn_L23_PC_cAD', 'presyn_VPM_sTC','L23_PC_cAD','presyn_L5_TTPC2_cAD', 'L5_TTPC2_cAD','stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54'], 'saveFig': True, 'showConns': False, 'figSize': (24,24), 'view': 'xy', 'fontSize':16}   # Plot 2D cells xz
                  
 # cfg.analysis['plotDipole'] = {'saveFig': True} 
 
@@ -306,7 +306,7 @@ cfg.TC_S1['POm_sTC_s1'] = True
 # create custom list of spike times cell type = 'L5_TTPC'
 #------------------------------------------------------------------------------
 cfg.Nstim_pop = 5
-cfg.Nstim_cellsperpop = 10
+cfg.Nstim_cellsperpop = 100
 cfg.dtstimcells = 0.1
 cfg.Nstim_probEE = 0.01
 cfg.Nstim_probEI = 0.01

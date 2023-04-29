@@ -201,7 +201,7 @@ for cellName in cfg.S1cells:
 #------------------------------------------------------------------------------
 for ii in range(cfg.Nstim_pop):
     dd = ii*cfg.dtstimcells
-    spkTimes = [tt+dd for tt in range(1000,1030,5)]
+    spkTimes = [tt+dd for tt in [1000,2000,2005,2010,2015,2020]]
     # print(spkTimes)
     netParams.popParams['stimL5'+str(ii)] = {'cellModel': 'VecStim', 'numCells': cfg.Nstim_cellsperpop, 'ynormRange': layer['5'], 'spkTimes': spkTimes}  # VecStim with spike times
 

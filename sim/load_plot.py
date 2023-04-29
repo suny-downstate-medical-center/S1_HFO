@@ -168,122 +168,140 @@ for metype in S1cells:
             RP_L45.append(metype)
             # print(layernumber,int(layernumber),metype)
 
-###########################
-######## MAIN CODE ########
-###########################
+filename = '../data/v110_batch5/v110_batch5_data.pkl'
+timeRange = [1000, 2100]
 
-if __name__ == '__main__':
+layer_bounds= {'1':[0.0, 0.079], '2': [0.079,0.151], '3': [0.151,0.320], '23': [0.079,0.320], '4':[0.320,0.412], '5': [0.412,0.664], '6': [0.664,1.0]}
+allData = []
 
-    dataType = 'spont' #'speech' #'spont'
+sim.load(filename, instantiate=True, instantiateCells = False, instantiateConns = False, instantiateStims = False, instantiateRxD = False, createNEURONObj = False)
 
-    if dataType == 'spont':
-        filenames = ['../data/v109_batch3/v109_batch3_data.pkl']
-        timeRange = [9000, 10000]
+sim.analysis.plotRaster(**{'include': S1cells, 'saveFig': filename[:-4]+'_RP.png', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange': timeRange, 'orderBy':'gid', 'fontSize':8, 'figSize': (24,18), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
 
-    layer_bounds= {'1':[0.0, 0.079], '2': [0.079,0.151], '3': [0.151,0.320], '23': [0.079,0.320], '4':[0.320,0.412], '5': [0.412,0.664], '6': [0.664,1.0]}
+sim.analysis.plotRaster(**{'include': Ecells, 'saveFig': filename[:-4]+'_Ecells.png', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange': timeRange, 'orderBy':'gid', 'fontSize':8, 'figSize': (24,18), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
 
-    allData = []
-
-    for filename in filenames:
-
-        sim.load(filename, instantiate=True, instantiateConns = False, instantiateStims = False, instantiateRxD = False, createNEURONObj = False)
-
-        # standardd plots
-        # sim.analysis.plotRaster(**{'include': ['allCells'], 'saveFig': True, 'showFig': False, 'labels': None, 'popRates': False,'orderInverse': True, 'timeRange': timeRange, 'figSize': (48,36), 'fontSize':4, 'lw': 2, 'markerSize':2, 'marker': '.', 'dpi': 300})
-        # sim.analysis.plotRaster(**{'include': RP_L13, 'saveFig': filename[:-4]+'_RP_L13', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange': timeRange, 'orderBy':'y', 'fontSize':8, 'figSize': (24,12), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
-        sim.analysis.plotRaster(**{'include': RP_L45, 'saveFig': filename[:-4]+'_RP_L45.png', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange': timeRange, 'orderBy':'y', 'fontSize':8, 'figSize': (24,18), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
-        # sim.analysis.plotRaster(**{'include': RP_L6, 'saveFig': filename[:-4]+'_RP_L6', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange': timeRange, 'orderBy':'y', 'fontSize':8, 'figSize': (24,12), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
-        # sim.analysis.plotSpikeStats(stats=['rate'],figSize = (6,12), timeRange=[1500, 31500], dpi=300, showFig=0, saveFig=filename[:-4]+'_stats_30sec')
-        sim.analysis.plotSpikeStats(include=,stats=['rate'],figSize = (6,12), timeRange=[9000, 10000], dpi=300, showFig=0, saveFig=filename[:-4]+'_stats_1sec.png')
-        #sim.analysis.plotLFP(**{'plots': ['spectrogram'], 'electrodes': ['avg', [0], [1], [2,3,4,5,6,7,8,9], [10, 11, 12], [13], [14, 15], [16,17,18,19]], 'timeRange': timeRange, 'maxFreq': 50, 'figSize': (8,24), 'saveData': False, 'saveFig': filename[:-4]+'_LFP_spec_7s_all_elecs', 'showFig': False})
-
-        for mtype in Epops:
-            sim.analysis.plotSpikeStats(include=,stats=['rate'],figSize = (6,12), timeRange=[9000, 10000], dpi=300, showFig=0, saveFig=filename[:-4] + '_' + mtype + '_stats_1sec.png')
-
-        for mtype in Epops:
-            print('\n\n',mtype,'  N =',popNumber[mtype])
-            sim.analysis.plotTraces(include=popLabelEl[mtype], timeRange=timeRange, overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-110,50], 
-            axis=False, scaleBarLoc=3, figSize=(24, 2), fontSize=15, saveFig= filename[:-4] + '_' + mtype+ '_Vt.png');
+for mtype in Epops:
+    print('\n\n',mtype,'  N =',popNumber[mtype])
+    sim.analysis.plotTraces(include=popLabelEl[mtype], timeRange=timeRange, overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-90,20], 
+    axis=False, scaleBarLoc=3, figSize=(24, 12), fontSize=15, saveFig= filename[:-4] + '_' + mtype+ '_Vt.png');
                 
-        sim.analysis.plotTraces(include=RP_L45, timeRange=timeRange, overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-110,50], axis=False, scaleBarLoc=3, figSize=(24, 2), fontSize=15, saveFig= filename[:-4]+ '_RP_L45_Vt.png');
-        
-        sim.analysis.plotSpikeHist(include=Ecells[0:1], binSize=2, figSize=(16, 8), timeRange=[9500, 9650], dpi=300, saveFig=filename[:-4] + '_L23Epops_hist_1sec.png')
-        
-        sim.analysis.plotSpikeHist(include=[Icells[0:14],Icells[19:54]], binSize=5, figSize=(16, 8), timeRange=[9500, 9650], dpi=300, saveFig=filename[:-4] + '_L13Ipops_hist_1sec.png')
 
-        sim.analysis.plotSpikeHist(include=[popLabelEl[pop] for pop in Ipops[6:15] if popNumber[pop] > 80], binSize=2, figSize=(16, 8), timeRange=[9400, 9700], dpi=300, saveFig=filename[:-4] + '_L23Ipops_hist_1sec.png')
+# ###########################
+# ######## MAIN CODE ########
+# ###########################
 
-        sim.analysis.plotSpikeHist(include=popLabelEl['L23_BP'], binSize=2, figSize=(16, 8), timeRange=[9400, 9700], dpi=300, saveFig=filename[:-4] + '_L23Ipops_hist_1sec.png')
+# if __name__ == '__main__':
 
-        sim.analysis.plotSpikeHist(include=[Ecells[0:1],Ecells[1:4],Ecells[4:8],Ecells[8:]], binSize=2, figSize=(16, 8), timeRange=[9400, 9700], dpi=300, saveFig=filename[:-4] + '_L45Epops_hist_1sec.png')
+#     dataType = 'spont' #'speech' #'spont'
 
-        sim.analysis.plotSpikeHist(include=[Icells[54:83],Icells[83:125]], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], dpi=300, saveFig=filename[:-4] + '_L45Ipops_hist_5sec.png')
-        sim.analysis.plotSpikeHist(include=[Ecells[1:4],Ecells[4:8]], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], dpi=300, saveFig=filename[:-4] + '_L45Epops_hist_5sec.png')
+#     if dataType == 'spont':
+#         filenames = ['../data/v109_batch3/v109_batch3_data.pkl']
+#         timeRange = [9000, 10000]
 
-        sim.analysis.plotSpikeHist(include=[Icells[54:83],Icells[83:125]], binSize=5, figSize=(16, 8), timeRange=[9400, 9550], dpi=300, saveFig=filename[:-4] + '_L45Ipops_hist_150msec.png')
-        sim.analysis.plotSpikeHist(include=[Ecells[1:4],Ecells[4:8]], binSize=5, figSize=(16, 8), timeRange=[9400, 9550], dpi=300, saveFig=filename[:-4] + '_L45Epops_hist_150msec.png')
+#     layer_bounds= {'1':[0.0, 0.079], '2': [0.079,0.151], '3': [0.151,0.320], '23': [0.079,0.320], '4':[0.320,0.412], '5': [0.412,0.664], '6': [0.664,1.0]}
 
-        sim.analysis.plotSpikeHist(include=[Ecells[1:4],Icells[54:83],Ecells[4:8],Icells[83:125]], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], dpi=300, saveFig=filename[:-4] + '_L45_hist_5sec.png')
+#     allData = []
 
-        sim.analysis.plotSpikeHist(include=[Ecells[1:4],Icells[54:83],Ecells[4:8],Icells[83:125]], binSize=5, figSize=(16, 8), timeRange=[9400, 9550], dpi=300, saveFig=filename[:-4] + '_L45_hist_150msec.png')
+#     for filename in filenames:
 
-        sim.analysis.plotSpikeHist(include=[Ecells[1:4],Icells[54:83],Ecells[4:8],Icells[83:125]], binSize=5, figSize=(16, 8), timeRange=[9485, 9535], 
-        dpi=300, histData=filename[:-4] + '_L45_hist_50msec.json', saveFig=filename[:-4] + '_L45_hist_50msec.png')
+#         sim.load(filename, instantiate=True, instantiateConns = False, instantiateStims = False, instantiateRxD = False, createNEURONObj = False)
 
+#         # standardd plots
+#         # sim.analysis.plotRaster(**{'include': ['allCells'], 'saveFig': True, 'showFig': False, 'labels': None, 'popRates': False,'orderInverse': True, 'timeRange': timeRange, 'figSize': (48,36), 'fontSize':4, 'lw': 2, 'markerSize':2, 'marker': '.', 'dpi': 300})
+#         # sim.analysis.plotRaster(**{'include': RP_L13, 'saveFig': filename[:-4]+'_RP_L13', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange': timeRange, 'orderBy':'y', 'fontSize':8, 'figSize': (24,12), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
+#         sim.analysis.plotRaster(**{'include': RP_L45, 'saveFig': filename[:-4]+'_RP_L45.png', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange': timeRange, 'orderBy':'y', 'fontSize':8, 'figSize': (24,18), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
+#         # sim.analysis.plotRaster(**{'include': RP_L6, 'saveFig': filename[:-4]+'_RP_L6', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange': timeRange, 'orderBy':'y', 'fontSize':8, 'figSize': (24,12), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
+#         # sim.analysis.plotSpikeStats(stats=['rate'],figSize = (6,12), timeRange=[1500, 31500], dpi=300, showFig=0, saveFig=filename[:-4]+'_stats_30sec')
+#         sim.analysis.plotSpikeStats(include=,stats=['rate'],figSize = (6,12), timeRange=[9000, 10000], dpi=300, showFig=0, saveFig=filename[:-4]+'_stats_1sec.png')
+#         #sim.analysis.plotLFP(**{'plots': ['spectrogram'], 'electrodes': ['avg', [0], [1], [2,3,4,5,6,7,8,9], [10, 11, 12], [13], [14, 15], [16,17,18,19]], 'timeRange': timeRange, 'maxFreq': 50, 'figSize': (8,24), 'saveData': False, 'saveFig': filename[:-4]+'_LFP_spec_7s_all_elecs', 'showFig': False})
 
-        sim.analysis.plotSpikeHist(include=[Ecells[1:4]], binSize=5, figSize=(16, 8), timeRange=[9400, 9500], dpi=300, saveFig=filename[:-4] + '_L45_hist_150msec.png')
+#         for mtype in Epops:
+#             sim.analysis.plotSpikeStats(include=,stats=['rate'],figSize = (6,12), timeRange=[9000, 10000], dpi=300, showFig=0, saveFig=filename[:-4] + '_' + mtype + '_stats_1sec.png')
 
-
-        sim.analysis.plotSpikeHist(include=[Ecells[8:],Icells[125:]], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], dpi=300, saveFig=filename[:-4] + '_L6_hist_5sec.png')
-
-        sim.analysis.plotSpikeHist(include=[Ecells[8:],Icells[125:]], binSize=5, figSize=(16, 8), timeRange=[9400, 9550], 
-        dpi=300, saveFig=filename[:-4] + '_L6_hist_150msec.png')
-
-
-
-        sim.analysis.plotSpikeHist(include=[Ecells,Icells], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], 
-        dpi=300, saveFig=filename[:-4] + '_hist_5sec.png')
-
-        sim.analysis.plotSpikeHist(include=[Ecells,Icells], binSize=2, figSize=(16, 8), timeRange=[9485, 9535], 
-        dpi=300, saveFig=filename[:-4] + '_hist_50msec.png')
-        
-        sim.analysis.plotRaster(**{'include': RP_L45, 'saveFig': filename[:-4]+'_RP_L45_150msec.png', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange':[9400, 9550] , 'orderBy':'y', 'fontSize':8, 'figSize': (24,18), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
-        
-# Icells[0:14],Icells[15:54],
-
-        for pops in cellParamLabels:
-            print('\n\n',pops,'  N =',cellNumber[pops])
-            sim.analysis.plotTraces(include=[pops], timeRange=timeRange, overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-110,50], axis=False, scaleBarLoc=3, figSize=(24, 2), fontSize=15, saveFig=filename[:-4] + '_' + pops+ '_Vt.png');
-        
-        # sim.analysis.plotRaster(**{'include': S1cells, 'saveFig': True, 'showFig': False, 'labels': None, 'popRates': False,'orderInverse': True, 'timeRange': timeRange, 'figSize': (36,24), 'fontSize':4, 'lw': 5, 'markerSize':10, 'marker': '.', 'dpi': 300})
+#         for mtype in Epops:
+#             print('\n\n',mtype,'  N =',popNumber[mtype])
+#             sim.analysis.plotTraces(include=popLabelEl[mtype], timeRange=timeRange, overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-110,50], 
+#             axis=False, scaleBarLoc=3, figSize=(24, 2), fontSize=15, saveFig= filename[:-4] + '_' + mtype+ '_Vt.png');
                 
-        # sim.analysis.plotLFP(**{'plots': ['locations'], 
-        #         'figSize': (24,24), 
-        #         'saveData': False, 
-        #         'saveFig': True, 'showFig': False, 'dpi': 300})
+#         sim.analysis.plotTraces(include=RP_L45, timeRange=timeRange, overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-110,50], axis=False, scaleBarLoc=3, figSize=(24, 2), fontSize=15, saveFig= filename[:-4]+ '_RP_L45_Vt.png');
+        
+#         sim.analysis.plotSpikeHist(include=Ecells[0:1], binSize=2, figSize=(16, 8), timeRange=[9500, 9650], dpi=300, saveFig=filename[:-4] + '_L23Epops_hist_1sec.png')
+        
+#         sim.analysis.plotSpikeHist(include=[Icells[0:14],Icells[19:54]], binSize=5, figSize=(16, 8), timeRange=[9500, 9650], dpi=300, saveFig=filename[:-4] + '_L13Ipops_hist_1sec.png')
 
-        # sim.analysis.plotLFP(**{'plots': ['timeSeries'], 
-        #         # 'electrodes': 
-        #         # [[0,1,2,3]], #'avg', 
-        #         'timeRange': timeRange, 
-        #         'figSize': (24,12), 'saveFig': True, 'showFig': False})
+#         sim.analysis.plotSpikeHist(include=[popLabelEl[pop] for pop in Ipops[6:15] if popNumber[pop] > 80], binSize=2, figSize=(16, 8), timeRange=[9400, 9700], dpi=300, saveFig=filename[:-4] + '_L23Ipops_hist_1sec.png')
 
-        # sim.analysis.plotLFP(**{'plots': ['spectrogram'], 
-        #         # 'electrodes': 
-        #         # [[0,1,2,3]],
-        #         'timeRange': timeRange, 
-        #         'minFreq': 100, 
-        #         'maxFreq': 500, 
-        #         'figSize': (16,12), 
-        #         'saveData': False, 
-        #         'saveFig': True, 'showFig': False})
+#         sim.analysis.plotSpikeHist(include=popLabelEl['L23_BP'], binSize=2, figSize=(16, 8), timeRange=[9400, 9700], dpi=300, saveFig=filename[:-4] + '_L23Ipops_hist_1sec.png')
 
-        # sim.analysis.plotLFP(**{'plots': ['PSD'], 
-        #         # 'electrodes': 
-        #         # [[0,1,2,3]],
-        #         'timeRange': timeRange, 
-        #         'minFreq': 100, 
-        #         'maxFreq': 500, 
-        #         'figSize': (8,12), 
-        #         'saveData': False, 
-        #         'saveFig': True, 'showFig': False})
+#         sim.analysis.plotSpikeHist(include=[Ecells[0:1],Ecells[1:4],Ecells[4:8],Ecells[8:]], binSize=2, figSize=(16, 8), timeRange=[9400, 9700], dpi=300, saveFig=filename[:-4] + '_L45Epops_hist_1sec.png')
+
+#         sim.analysis.plotSpikeHist(include=[Icells[54:83],Icells[83:125]], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], dpi=300, saveFig=filename[:-4] + '_L45Ipops_hist_5sec.png')
+#         sim.analysis.plotSpikeHist(include=[Ecells[1:4],Ecells[4:8]], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], dpi=300, saveFig=filename[:-4] + '_L45Epops_hist_5sec.png')
+
+#         sim.analysis.plotSpikeHist(include=[Icells[54:83],Icells[83:125]], binSize=5, figSize=(16, 8), timeRange=[9400, 9550], dpi=300, saveFig=filename[:-4] + '_L45Ipops_hist_150msec.png')
+#         sim.analysis.plotSpikeHist(include=[Ecells[1:4],Ecells[4:8]], binSize=5, figSize=(16, 8), timeRange=[9400, 9550], dpi=300, saveFig=filename[:-4] + '_L45Epops_hist_150msec.png')
+
+#         sim.analysis.plotSpikeHist(include=[Ecells[1:4],Icells[54:83],Ecells[4:8],Icells[83:125]], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], dpi=300, saveFig=filename[:-4] + '_L45_hist_5sec.png')
+
+#         sim.analysis.plotSpikeHist(include=[Ecells[1:4],Icells[54:83],Ecells[4:8],Icells[83:125]], binSize=5, figSize=(16, 8), timeRange=[9400, 9550], dpi=300, saveFig=filename[:-4] + '_L45_hist_150msec.png')
+
+#         sim.analysis.plotSpikeHist(include=[Ecells[1:4],Icells[54:83],Ecells[4:8],Icells[83:125]], binSize=5, figSize=(16, 8), timeRange=[9485, 9535], 
+#         dpi=300, histData=filename[:-4] + '_L45_hist_50msec.json', saveFig=filename[:-4] + '_L45_hist_50msec.png')
+
+
+#         sim.analysis.plotSpikeHist(include=[Ecells[1:4]], binSize=5, figSize=(16, 8), timeRange=[9400, 9500], dpi=300, saveFig=filename[:-4] + '_L45_hist_150msec.png')
+
+
+#         sim.analysis.plotSpikeHist(include=[Ecells[8:],Icells[125:]], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], dpi=300, saveFig=filename[:-4] + '_L6_hist_5sec.png')
+
+#         sim.analysis.plotSpikeHist(include=[Ecells[8:],Icells[125:]], binSize=5, figSize=(16, 8), timeRange=[9400, 9550], 
+#         dpi=300, saveFig=filename[:-4] + '_L6_hist_150msec.png')
+
+
+
+#         sim.analysis.plotSpikeHist(include=[Ecells,Icells], binSize=50, figSize=(16, 8), timeRange=[5000, 10000], 
+#         dpi=300, saveFig=filename[:-4] + '_hist_5sec.png')
+
+#         sim.analysis.plotSpikeHist(include=[Ecells,Icells], binSize=2, figSize=(16, 8), timeRange=[9485, 9535], 
+#         dpi=300, saveFig=filename[:-4] + '_hist_50msec.png')
+        
+#         sim.analysis.plotRaster(**{'include': RP_L45, 'saveFig': filename[:-4]+'_RP_L45_150msec.png', 'showFig': False, 'popRates': 'minimal', 'orderInverse': True, 'timeRange':[9400, 9550] , 'orderBy':'y', 'fontSize':8, 'figSize': (24,18), 'lw': 4.0, 'markerSize': 4, 'marker': 'o', 'dpi': 300})
+        
+# # Icells[0:14],Icells[15:54],
+
+#         for pops in cellParamLabels:
+#             print('\n\n',pops,'  N =',cellNumber[pops])
+#             sim.analysis.plotTraces(include=[pops], timeRange=timeRange, overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-110,50], axis=False, scaleBarLoc=3, figSize=(24, 2), fontSize=15, saveFig=filename[:-4] + '_' + pops+ '_Vt.png');
+        
+#         # sim.analysis.plotRaster(**{'include': S1cells, 'saveFig': True, 'showFig': False, 'labels': None, 'popRates': False,'orderInverse': True, 'timeRange': timeRange, 'figSize': (36,24), 'fontSize':4, 'lw': 5, 'markerSize':10, 'marker': '.', 'dpi': 300})
+                
+#         # sim.analysis.plotLFP(**{'plots': ['locations'], 
+#         #         'figSize': (24,24), 
+#         #         'saveData': False, 
+#         #         'saveFig': True, 'showFig': False, 'dpi': 300})
+
+#         # sim.analysis.plotLFP(**{'plots': ['timeSeries'], 
+#         #         # 'electrodes': 
+#         #         # [[0,1,2,3]], #'avg', 
+#         #         'timeRange': timeRange, 
+#         #         'figSize': (24,12), 'saveFig': True, 'showFig': False})
+
+#         # sim.analysis.plotLFP(**{'plots': ['spectrogram'], 
+#         #         # 'electrodes': 
+#         #         # [[0,1,2,3]],
+#         #         'timeRange': timeRange, 
+#         #         'minFreq': 100, 
+#         #         'maxFreq': 500, 
+#         #         'figSize': (16,12), 
+#         #         'saveData': False, 
+#         #         'saveFig': True, 'showFig': False})
+
+#         # sim.analysis.plotLFP(**{'plots': ['PSD'], 
+#         #         # 'electrodes': 
+#         #         # [[0,1,2,3]],
+#         #         'timeRange': timeRange, 
+#         #         'minFreq': 100, 
+#         #         'maxFreq': 500, 
+#         #         'figSize': (8,12), 
+#         #         'saveData': False, 
+#         #         'saveFig': True, 'showFig': False})

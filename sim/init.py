@@ -79,7 +79,7 @@ sim.analysis.plotData()         			# plot spike raster etc
 # sim.analysis.plotLFP(**{'plots': ['timeSeries'], 'electrodes': [4,5,6,7], 'timeRange': [0, 300], 'maxFreq':80, 'figSize': (16,8), 'saveFig': '../data/'+cfg.simLabel[0:9]+'/'+cfg.simLabel + '_' +'LFP2', 'showFig': False})
 # sim.analysis.plotLFP(**{'plots': ['timeSeries'], 'electrodes': [8,9,10,11], 'timeRange': [0, 300], 'maxFreq':80, 'figSize': (16,8), 'saveFig': '../data/'+cfg.simLabel[0:9]+'/'+cfg.simLabel + '_' +'LFP3', 'showFig': False})
 if sim.rank == 0:
-    for pops in cellParamLabels:
-        print('\n\n',pops,'  N =',cellNumber[pops])
-        sim.analysis.plotTraces(include=[pops], timeRange=[900,1100], overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-110,50], axis=False, scaleBarLoc=3, figSize=(24, 12), fontSize=15, saveFig='../data/'+cfg.simLabel[0:9]+'/'+cfg.simLabel + '_' + pops+ '_Vt.png');
+    for pops in cfg.cellParamLabels:
+        print('\n\n',pops,'  N =',cfg.cellNumber[pops])
+        sim.analysis.plotTraces(include=[pops], timeRange=[900,2100], overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-90,20], axis=False, scaleBarLoc=3, figSize=(24, 12), fontSize=15, saveFig='../data/'+cfg.simLabel[0:9]+'/'+cfg.simLabel + '_' + pops+ '_Vt.png');
             
