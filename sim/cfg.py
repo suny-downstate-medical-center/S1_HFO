@@ -25,7 +25,7 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 2.2*1e3 ## Duration of the sim, in ms  
+cfg.duration = 2.0*1e3 ## Duration of the sim, in ms  
 cfg.dt = 0.05
 cfg.seeds = {'conn': 4321, 'stim': 1000, 'loc': 4321} 
 cfg.hParams = {'celsius': 34, 'v_init': -69.5}  
@@ -118,7 +118,7 @@ for cellLabel in spkTimes.keys():
 
 #------------------------------------------------------------------------------
 cfg.cynradNumber = 1
-cfg.fracmorphoradius = 1.0/2.0
+cfg.fracmorphoradius = 1.0/20.0
 
 excluderadius2a = (cfg.cynradNumber-1)*(0.5*cfg.fracmorphoradius)**2
 excluderadius2b = (cfg.cynradNumber)*(0.5*cfg.fracmorphoradius)**2
@@ -180,20 +180,7 @@ for metype in  cfg.Nmorpho.keys(): # metype
 #------------------------------------------------------------------------------  
 #
 #------------------------------------------------------------------------------  
-# cfg.popParamLabels = cfg.S1pops
-# cfg.cellParamLabels = cfg.S1cells
-# #------------------------------------------------------------------------------  
-# #
-# #------------------------------------------------------------------------------  
-# subPopLabels = cfg.S1pops[28:41] # from 0 to 55 is full S1 -> L1:6 L23:10 L4:12 L5:13 L6:14
-# # print(subPopLabels)
-
-# cfg.S1pops = subPopLabels
-# cfg.S1cells = []
-# for metype in cfg.cellParamLabels:
-#     if cfg.popLabel[metype] in subPopLabels:        
-#         cfg.S1cells.append(metype)
-        
+       
 cfg.thalamicpops = []
 
 cfg.popParamLabels = cfg.S1pops
@@ -237,7 +224,7 @@ cfg.recordStep = 0.1
 #------------------------------------------------------------------------------
 # Saving
 #------------------------------------------------------------------------------
-cfg.simLabel = 'v110_batch5'       #   + str(cfg.cynradNumber)
+cfg.simLabel = 'v120_batch0'       #   + str(cfg.cynradNumber)
 cfg.saveFolder = '../data/'+cfg.simLabel
 # cfg.filename =                	## Set file output name
 cfg.savePickle = True	        	## Save pkl file
@@ -252,8 +239,8 @@ cfg.saveCellConns = False
 # Analysis and plotting 
 # ------------------------------------------------------------------------------
 cfg.analysis['plotRaster'] = {'include': cfg.S1cells, 'saveFig': True, 'showFig': False,'orderInverse': True, 'timeRange': [0,cfg.duration], 'figSize': (24,24), 'fontSize':4, 'markerSize':4, 'marker': 'o', 'dpi': 300} 
-# cfg.analysis['plot2Dnet']   = {'include': ['presyn_L23_PC_cAD','presyn_L5_TTPC2_cAD', 'presyn_VPM_sTC','L23_PC_cAD','L5_TTPC2_cAD'],'saveFig': True, 'showConns': False, 'figSize': (24,24), 'view': 'xz', 'fontSize':16}   # Plot 2D cells xy
-# cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'trace', 'overlay': True, 'timeRange': [0,cfg.duration], 'ylim': [-100,50], 'saveFig': True, 'showFig': False, 'figSize':(24,24)}
+cfg.analysis['plot2Dnet']   = {'include': ['presyn_L23_PC_cAD','presyn_L5_TTPC2_cAD', 'presyn_VPM_sTC','L23_PC_cAD','L5_TTPC2_cAD'],'saveFig': True, 'showConns': False, 'figSize': (24,24), 'view': 'xz', 'fontSize':16}   # Plot 2D cells xy
+cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'trace', 'overlay': True, 'timeRange': [0,cfg.duration], 'ylim': [-100,50], 'saveFig': True, 'showFig': False, 'figSize':(24,24)}
 # cfg.analysis['plot2Dfiring']={'saveFig': True, 'figSize': (24,24), 'fontSize':16}
 # cfg.analysis['plotConn'] = {'includePre': cfg.allpops, 'includePost': cfg.allpops, 'feature': 'numConns', 'groupBy': 'pop', 'figSize': (24,24), 'saveFig': True, 'orderBy': 'gid', 'graphType': 'matrix', 'saveData':'../data/v5_batch0/v5_batch0_matrix_numConn.json', 'fontSize': 18}
 # cfg.analysis['plotConn'] = {'includePre': ['L1_DAC_cNA','L23_PC_cAD','L4_SS_cAD','L4_NBC_cNA','L5_TTPC2_cAD', 'L5_LBC_cNA', 'L6_TPC_L4_cAD', 'L6_LBC_cNA', 'presyn_'+'VPM_sTC', 'presyn_'+'VPL_sTC', 'presyn_'+'POm_sTC_s1'], 
@@ -301,12 +288,3 @@ cfg.TC_S1 = {}
 cfg.TC_S1['VPL_sTC'] = True
 cfg.TC_S1['VPM_sTC'] = True
 cfg.TC_S1['POm_sTC_s1'] = True
-
-#------------------------------------------------------------------------------
-# create custom list of spike times cell type = 'L5_TTPC'
-#------------------------------------------------------------------------------
-cfg.Nstim_pop = 5
-cfg.Nstim_cellsperpop = 100
-cfg.dtstimcells = 0.1
-cfg.Nstim_probEE = 0.01
-cfg.Nstim_probEI = 0.01

@@ -81,5 +81,5 @@ sim.analysis.plotData()         			# plot spike raster etc
 if sim.rank == 0:
     for pops in cfg.cellParamLabels:
         print('\n\n',pops,'  N =',cfg.cellNumber[pops])
-        sim.analysis.plotTraces(include=[pops], timeRange=[900,2100], overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-90,20], axis=False, scaleBarLoc=3, figSize=(24, 12), fontSize=15, saveFig='../data/'+cfg.simLabel[0:9]+'/'+cfg.simLabel + '_' + pops+ '_Vt.png');
+        sim.analysis.plotTraces(include=[pops], timeRange=[1000,2000], overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-90,20], axis=False, scaleBarLoc=3, figSize=(24, 12), fontSize=15, saveFig='../data/'+cfg.simLabel[0:11]+'/'+cfg.simLabel + '_' + pops+ '_Vt.png');
             

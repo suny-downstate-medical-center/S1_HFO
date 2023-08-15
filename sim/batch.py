@@ -38,7 +38,7 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'mpi_direct',
             'cores': 8,
             'script': 'init.py',
-            'mpiCommand': 'mpiexec --use-hwthread-cpus', # --use-hwthread-cpus
+            'mpiCommand': 'mpiexec', # --use-hwthread-cpus
             'skip': True}
 
     elif type=='mpi_direct2':
@@ -53,10 +53,38 @@ def setRunCfg(b, type='mpi_bulletin'):
             'nodes': 1,
             'coresPerNode': 40,
             'email': 'fernandodasilvaborges@gmail.com',
-            'folder': '/home/ext_fernandodasilvaborges_gmail_/S1_netpyne/sim/', 
+            'folder': '/home/ext_fernandodasilvaborges_gmail_/S1_HFO/sim/', 
             'script': 'init.py', 
             'mpiCommand': 'mpirun',
             'skipCustom': '_raster_gid.png'}
+
+    elif type == 'hpc_slurm_Expanse_debug':
+        b.runCfg = {'type': 'hpc_slurm',
+                    'allocation': 'TG-IBN140002',
+                    'partition': 'debug',
+                    'walltime': '0:30:00',
+                    'nodes': 1,
+                    'coresPerNode': 64,
+                    'email': 'fernandodasilvaborges@gmail.com',
+                    'folder': '/home/fborges/S1_HFO/sim/',
+                    'script': 'init.py',
+                    'mpiCommand': 'mpirun',
+                    'custom': '#SBATCH --mem=249325M\n#SBATCH --export=ALL\n#SBATCH --partition=debug',
+                    'skip': True}
+
+    elif type == 'hpc_slurm_Expanse':
+        b.runCfg = {'type': 'hpc_slurm',
+                    'allocation': 'TG-IBN140002',
+                    'partition': 'large-shared',
+                    'walltime': '8:00:00',
+                    'nodes': 1,
+                    'coresPerNode': 128,
+                    'email': 'fernandodasilvaborges@gmail.com',
+                    'folder': '/home/fborges/S1_HFO/sim/',
+                    'script': 'init.py',
+                    'mpiCommand': 'mpirun',
+                    'custom': '#SBATCH --mem=512G\n#SBATCH --export=ALL\n#SBATCH --partition=large-shared',
+                    'skip': True}
 
 # ----------------------------------------------------------------------------------------------
 # Main code
@@ -64,8 +92,8 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v110_batch3'  
+    b.batchLabel = 'v200_batch2'  
     b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
-    setRunCfg(b, 'mpi_direct')
+    setRunCfg(b, 'hpc_slurm_Expanse_debug') # setRunCfg(b, 'hpc_slurm_Expanse')
     b.run() # run batch
