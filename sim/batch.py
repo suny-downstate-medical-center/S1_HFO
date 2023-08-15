@@ -58,25 +58,11 @@ def setRunCfg(b, type='mpi_bulletin'):
             'mpiCommand': 'mpirun',
             'skipCustom': '_raster_gid.png'}
 
-    elif type == 'hpc_slurm_Expanse_debug':
-        b.runCfg = {'type': 'hpc_slurm',
-                    'allocation': 'TG-IBN140002',
-                    'partition': 'debug',
-                    'walltime': '0:30:00',
-                    'nodes': 1,
-                    'coresPerNode': 64,
-                    'email': 'fernandodasilvaborges@gmail.com',
-                    'folder': '/home/fborges/S1_HFO/sim/',
-                    'script': 'init.py',
-                    'mpiCommand': 'mpirun',
-                    'custom': '#SBATCH --mem=249325M\n#SBATCH --export=ALL\n#SBATCH --partition=debug',
-                    'skip': True}
-
     elif type == 'hpc_slurm_Expanse':
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'TG-IBN140002',
                     'partition': 'large-shared',
-                    'walltime': '8:00:00',
+                    'walltime': '4:00:00',
                     'nodes': 1,
                     'coresPerNode': 128,
                     'email': 'fernandodasilvaborges@gmail.com',
@@ -92,8 +78,8 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v200_batch2'  
+    b.batchLabel = 'v120_batch1'  
     b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
-    setRunCfg(b, 'hpc_slurm_Expanse_debug') # setRunCfg(b, 'hpc_slurm_Expanse')
+    setRunCfg(b, 'hpc_slurm_Expanse') # setRunCfg(b, 'hpc_slurm_Expanse')
     b.run() # run batch

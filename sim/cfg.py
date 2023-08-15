@@ -25,7 +25,7 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 2.0*1e3 ## Duration of the sim, in ms  
+cfg.duration = 3.0*1e3 ## Duration of the sim, in ms  
 cfg.dt = 0.05
 cfg.seeds = {'conn': 4321, 'stim': 1000, 'loc': 4321} 
 cfg.hParams = {'celsius': 34, 'v_init': -69.5}  
@@ -118,7 +118,7 @@ for cellLabel in spkTimes.keys():
 
 #------------------------------------------------------------------------------
 cfg.cynradNumber = 1
-cfg.fracmorphoradius = 1.0/20.0
+cfg.fracmorphoradius = 1.0/2.0
 
 excluderadius2a = (cfg.cynradNumber-1)*(0.5*cfg.fracmorphoradius)**2
 excluderadius2b = (cfg.cynradNumber)*(0.5*cfg.fracmorphoradius)**2
@@ -214,12 +214,11 @@ elif cfg.cellsrec == 2: # record one cell of each cellMEtype # need more test!!!
 cfg.recordTraces = {'V_soma': {'sec':'soma', 'loc':0.5, 'var':'v'}}  ## Dict with traces to record
 cfg.recordStim = False			
 cfg.recordTime = False  		
-cfg.recordStep = 0.1       
+cfg.recordStep = 0.5       
 
 # cfg.saveLFPPops =  cfg.recordCells 
 
-# cfg.recordLFP = [[0, y, 0] for y in [1000, 1100, 1200]] # 3 elec in L5  
-
+cfg.recordLFP = [[0, y, 0] for y in [500, 1000, 1500, 2000]] # 1 elec in L1 and 3 elec in L5  
 
 #------------------------------------------------------------------------------
 # Saving
@@ -251,7 +250,7 @@ cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'trace', 
 
 # cfg.analysis['plotLFP'] = {'plots': ['timeSeries','PSD', 'spectrogram'], 'electrodes': [[0,1,2,3],[4,5,6,7,8,9,10,11]], 'timeRange': [1000, cfg.duration], 'maxFreq': 400, 'figSize': (8,4), 'saveData': False, 'saveFig': True, 'showFig': False} # 
 
-# cfg.analysis['plotLFP'] = {'separation': 1.0, 'plots': ['timeSeries', 'spectrogram','PSD'], 'timeRange': [900,cfg.duration], 'maxFreq': 500, 'saveFig': True, 'showFig': False}
+cfg.analysis['plotLFP'] = {'separation': 1.0, 'plots': ['timeSeries', 'spectrogram','PSD'], 'timeRange': [900,cfg.duration], 'maxFreq': 500, 'saveFig': True, 'showFig': False}
 
 # cfg.analysis['plot2Dnet']   = {'include': ['presyn_L23_PC_cAD', 'presyn_VPM_sTC','L23_PC_cAD','presyn_L5_TTPC2_cAD', 'L5_TTPC2_cAD','stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54'], 'saveFig': True, 'showConns': False, 'figSize': (24,24), 'view': 'xz', 'fontSize':16}   # Plot 2D cells xz
                  
