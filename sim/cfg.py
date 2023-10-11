@@ -118,7 +118,7 @@ for cellLabel in spkTimes.keys():
 
 #------------------------------------------------------------------------------
 cfg.cynradNumber = 1
-cfg.fracmorphoradius = 1.0/2.0
+cfg.fracmorphoradius = 1.0/50.0
 
 excluderadius2a = (cfg.cynradNumber-1)*(0.5*cfg.fracmorphoradius)**2
 excluderadius2b = (cfg.cynradNumber)*(0.5*cfg.fracmorphoradius)**2
@@ -177,10 +177,6 @@ for metype in  cfg.Nmorpho.keys(): # metype
                 cfg.popLabelEl[mtype] = [] 
             cfg.popLabelEl[mtype].append(metype)      
 
-#------------------------------------------------------------------------------  
-#
-#------------------------------------------------------------------------------  
-       
 cfg.thalamicpops = []
 
 cfg.popParamLabels = cfg.S1pops
@@ -218,7 +214,7 @@ cfg.recordStep = 0.5
 
 # cfg.saveLFPPops =  cfg.recordCells 
 
-cfg.recordLFP = [[0, y, 0] for y in [500, 1000, 1500, 2000]] # 1 elec in L1 and 3 elec in L5  
+cfg.recordLFP = [[0, y, 0] for y in [1000, 2000]] # 1 elec in L1 and 3 elec in L5  
 
 #------------------------------------------------------------------------------
 # Saving
@@ -250,7 +246,7 @@ cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'trace', 
 
 # cfg.analysis['plotLFP'] = {'plots': ['timeSeries','PSD', 'spectrogram'], 'electrodes': [[0,1,2,3],[4,5,6,7,8,9,10,11]], 'timeRange': [1000, cfg.duration], 'maxFreq': 400, 'figSize': (8,4), 'saveData': False, 'saveFig': True, 'showFig': False} # 
 
-cfg.analysis['plotLFP'] = {'separation': 1.0, 'plots': ['timeSeries', 'spectrogram','PSD'], 'timeRange': [900,cfg.duration], 'maxFreq': 500, 'saveFig': True, 'showFig': False}
+cfg.analysis['plotLFP'] = {'separation': 1.0, 'plots': ['timeSeries', 'spectrogram','PSD'], 'timeRange': [1000,cfg.duration], 'maxFreq': 500, 'saveFig': True, 'showFig': False}
 
 # cfg.analysis['plot2Dnet']   = {'include': ['presyn_L23_PC_cAD', 'presyn_VPM_sTC','L23_PC_cAD','presyn_L5_TTPC2_cAD', 'L5_TTPC2_cAD','stimL50', 'stimL51', 'stimL52', 'stimL53', 'stimL54'], 'saveFig': True, 'showConns': False, 'figSize': (24,24), 'view': 'xz', 'fontSize':16}   # Plot 2D cells xz
                  
@@ -287,3 +283,19 @@ cfg.TC_S1 = {}
 cfg.TC_S1['VPL_sTC'] = True
 cfg.TC_S1['VPM_sTC'] = True
 cfg.TC_S1['POm_sTC_s1'] = True
+
+#-----------------------------------------------------------------------------
+cfg.epileptic_tissue = True #
+
+cfg.use_frac = {} # use[invivo] = cfg.use_frac * use[invitro]
+
+if cfg.epileptic_tissue:
+    cfg.use_frac['EIproximal'] = 1.0
+    cfg.use_frac['Inh'] = 1.0
+    cfg.use_frac['EE'] = 1.0
+    cfg.use_frac['EIdistal'] = 1.0
+else:
+    cfg.use_frac['EIproximal'] = 0.75 # shallow dependence between PC-proximal targeting cell types (LBCs, NBCs, SBCs, ChC)
+    cfg.use_frac['Inh'] = 0.50 # Pathways that had not been studied experimentally were assumed to have an intermediate level of dependence
+    cfg.use_frac['EE'] = 0.25 # steep Ca2+ dependence for connections between PC-PC and PC-distal targeting cell types (DBC, BTC, MC, BP)
+    cfg.use_frac['EIdistal'] = 0.25 

@@ -260,7 +260,7 @@ for syntype in syntypes:
     if syntype > 50:  # Exc
         
         netParams.synMechParams['S1_EE_STP_Det_' + str(syntype)] = {'mod': 'DetAMPANMDA',
-                                         'Use': dfS6['use'][syntype], # ± dfS6['useStd'][syntype]
+                                         'Use': dfS6['use'][syntype]*cfg.use_frac['EE'], # ± dfS6['useStd'][syntype]
                                          'Dep': dfS6['dep'][syntype], # ± dfS6['depStd'][syntype] 
                                          'Fac': dfS6['fac'][syntype], # ± dfS6['facStd'][syntype]
                                          'tau_d_AMPA': 1.74, # ± 0.18 ms
@@ -270,8 +270,19 @@ for syntype in syntypes:
                                          'NMDA_ratio': 0.8, # ± 0.1 for EE -- experimentally measured for some path?
                                          'mg':1.0, #    0.5mM where exceptionally specified?                                                                
                                             }
-        netParams.synMechParams['S1_EI_STP_Det_' + str(syntype)] = {'mod': 'DetAMPANMDA',
-                                         'Use': dfS6['use'][syntype], # ± dfS6['useStd'][syntype]
+        netParams.synMechParams['S1_EIproximal_STP_Det_' + str(syntype)] = {'mod': 'DetAMPANMDA',
+                                         'Use': dfS6['use'][syntype]*cfg.use_frac['EIproximal'], # ± dfS6['useStd'][syntype]
+                                         'Dep': dfS6['dep'][syntype], # ± dfS6['depStd'][syntype] 
+                                         'Fac': dfS6['fac'][syntype], # ± dfS6['facStd'][syntype]
+                                         'tau_d_AMPA': 1.74, # ± 0.18 ms
+                                         'tau_r_AMPA': 0.2,
+                                         'tau_r_NMDA': 0.29,
+                                         'tau_d_NMDA': 43,   
+                                         'NMDA_ratio': 0.4, # ± 0.1  for EI -- experimentally measured for some path?
+                                         'mg':1.0, #    0.5mM where exceptionally specified?                                                                
+                                            }
+        netParams.synMechParams['S1_EIdistal_STP_Det_' + str(syntype)] = {'mod': 'DetAMPANMDA',
+                                         'Use': dfS6['use'][syntype]*cfg.use_frac['EIdistal'], # ± dfS6['useStd'][syntype]
                                          'Dep': dfS6['dep'][syntype], # ± dfS6['depStd'][syntype] 
                                          'Fac': dfS6['fac'][syntype], # ± dfS6['facStd'][syntype]
                                          'tau_d_AMPA': 1.74, # ± 0.18 ms
@@ -283,27 +294,23 @@ for syntype in syntypes:
                                             }
     else: # Inh        
         netParams.synMechParams['S1_II_STP_Det_' + str(syntype)] = {'mod': 'DetGABAAB',
-                                         'Use': dfS6['use'][syntype], # ± dfS6['useStd'][syntype]
+                                         'Use': dfS6['use'][syntype]*cfg.use_frac['Inh'], # ± dfS6['useStd'][syntype]
                                          'Dep': dfS6['dep'][syntype], # ± dfS6['depStd'][syntype]  
                                          'Fac': dfS6['fac'][syntype], # ± dfS6['facStd'][syntype]
                                          'tau_d_GABAA': dfS6['decay'][syntype], # ± dfS6['decayStd'][syntype]
                                          'tau_r_GABAA': 0.2,   #rng.lognormal(0.2, 0.1) in synapses.hoc  
                                          'tau_d_GABAB': 260.9,
-                                         'tau_r_GABAB': 3.5,
-                                         'e_GABAA': -80.0, #= -80   (mV) : GABAA reversal potential
-#                                          'GABAB_ratio': 1.0,  #=0(1):The ratio of GABAB to GABAA  ?          
+                                         'tau_r_GABAB': 3.5,        
                                             }
         
         netParams.synMechParams['S1_IE_STP_Det_' + str(syntype)] = {'mod': 'DetGABAAB',
-                                         'Use': dfS6['use'][syntype], # ± dfS6['useStd'][syntype]
+                                         'Use': dfS6['use'][syntype]*cfg.use_frac['Inh'], # ± dfS6['useStd'][syntype]
                                          'Dep': dfS6['dep'][syntype], # ± dfS6['depStd'][syntype]  
                                          'Fac': dfS6['fac'][syntype], # ± dfS6['facStd'][syntype]
                                          'tau_d_GABAA': dfS6['decay'][syntype], # ± dfS6['decayStd'][syntype]
                                          'tau_r_GABAA': 0.2,   #rng.lognormal(0.2, 0.1) in synapses.hoc  
                                          'tau_d_GABAB': 260.9,
-                                         'tau_r_GABAB': 3.5,
-                                         'e_GABAA': -80.0, #= -80   (mV) : GABAA reversal potential
-#                                          'GABAB_ratio': 1.0,  #=0(1):The ratio of GABAB to GABAA   ?       
+                                         'tau_r_GABAB': 3.5,   
                                             }
         
         netParams.synMechParams['S1_IEL5_STP_Det_' + str(syntype)] = {'mod': 'DetGABAAB',
@@ -314,8 +321,7 @@ for syntype in syntypes:
                                          'tau_r_GABAA': 0.2,   #rng.lognormal(0.2, 0.1) in synapses.hoc  
                                          'tau_d_GABAB': 260.9,
                                          'tau_r_GABAB': 3.5,
-                                         'e_GABAA': -80.0, #= -80   (mV) : GABAA reversal potential
-#                                          'GABAB_ratio': 1.0,  #=0(1):The ratio of GABAB to GABAA   ?       
+                                         'e_GABAA': -80.0, #= -80   (mV) : GABAA reversal potential  
                                             }
 
 # Th NEW
@@ -555,8 +561,6 @@ if cfg.addConn:
 
                         if 'L5' == pre[0:2] and 'L5' == post[0:2]:   
                             netParams.connParams['EE_'+pre+'_'+post]['weight'] = 1.0 * parameters_syn['gsyn',connID]
-                            # print(pre,post,netParams.connParams['EE_'+pre+'_'+post]['weight'])
-
     
                         netParams.connParams['VS_'+'EE_'+pre+'_'+post] = { 
                             'preConds': {'pop': ['presyn_'+metypeVs for metypeVs in cfg.popLabelEl[pre]]}, 
@@ -597,7 +601,12 @@ if cfg.addConn:
                             cellpostList_A = cfg.popLabelEl[post]         
                              
                         connID = ConnTypes[pre][post][0]      
-                        synMechType = 'S1_EI_STP_Det_' + str(connID)  
+
+                        if 'DBC' in post or 'BTC' in post or 'MC' in post or 'BP' in post:  # steep Ca2+ dependence for connections between PC-distal targeting cell types (DBC, BTC, MC, BP)
+                            synMechType = 'S1_EIdistal_STP_Det_' + str(connID)
+                        else: # shallow dependence between PC-proximal targeting cell types (LBCs, NBCs, SBCs, ChC) + L1s and NGCs ????
+                            synMechType = 'S1_EIproximal_STP_Det_' + str(connID)  
+
                         contA+= 1                                                              
                         netParams.connParams['EI_'+pre+'_'+post] = { 
                                         'preConds': {'pop': cfg.popLabelEl[pre]}, 
@@ -618,10 +627,16 @@ if cfg.addConn:
                                         'delay': 'defaultDelay+dist_3D/propVelocity',
                                         'synsPerConn': int(synperconnNumber[pre][post]+0.5),
                                         'sec': 'spiny'}  
-                                       
+
                         if connID_B >= 0:          
                             connID = connID_B
-                            synMechType = 'S1_EI_STP_Det_' + str(connID)        
+
+                            if 'DBC' in post or 'BTC' in post or 'MC' in post or 'BP' in post:  # steep Ca2+ dependence for connections between PC-distal targeting cell types (DBC, BTC, MC, BP)
+                                synMechType = 'S1_EIdistal_STP_Det_' + str(connID)
+                            else: # shallow dependence between PC-proximal targeting cell types (LBCs, NBCs, SBCs, ChC) + L1s and NGCs ????
+                                synMechType = 'S1_EIproximal_STP_Det_' + str(connID)  
+
+
                             netParams.connParams['EI_'+pre+'_'+post+'_B'] = { 
                                             'preConds': {'pop': cfg.popLabelEl[pre]}, 
                                             'postConds': {'pop': cellpostList_B},
@@ -641,7 +656,7 @@ if cfg.addConn:
                                             'delay': 'defaultDelay+dist_3D/propVelocity',
                                             'synsPerConn': int(synperconnNumber[pre][post]+0.5),
                                             'sec': 'spiny'}   
-
+                                                
 #------------------------------------------------------------------------------
 # NetStim inputs to simulate Spontaneous synapses + background in S1 neurons - data from Rat
 #------------------------------------------------------------------------------
@@ -770,5 +785,5 @@ netParams.description = """
 - v108 - 'e_GABAA': -80.0 (but excitatory-excitatory L5 conn 1.50*strength basal)
 - v109 - v101 with more cell traces recorded
 - v110 - only L5 + stim 200Hz
-- v120 - 'e_GABAA': -80.0, (mV) : GABAA reversal potential == v101
+- v120 - == v101 with  "cfg.epileptic_tissue = " True or False option
 """

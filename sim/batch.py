@@ -58,11 +58,25 @@ def setRunCfg(b, type='mpi_bulletin'):
             'mpiCommand': 'mpirun',
             'skipCustom': '_raster_gid.png'}
 
+    elif type == 'hpc_slurm_Expanse_debug':
+        b.runCfg = {'type': 'hpc_slurm',
+                    'allocation': 'TG-IBN140002',
+                    'partition': 'debug',
+                    'walltime': '1:00:00',
+                    'nodes': 1,
+                    'coresPerNode': 4,
+                    'email': 'fernandodasilvaborges@gmail.com',
+                    'folder': '/home/fborges/S1_HFO/sim/',
+                    'script': 'init.py',
+                    'mpiCommand': 'mpirun',
+                    'custom': '#SBATCH --mem=249325M\n#SBATCH --export=ALL\n#SBATCH --partition=debug',
+                    'skip': True}
+
     elif type == 'hpc_slurm_Expanse':
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'TG-IBN140002',
                     'partition': 'large-shared',
-                    'walltime': '4:00:00',
+                    'walltime': '8:00:00',
                     'nodes': 1,
                     'coresPerNode': 128,
                     'email': 'fernandodasilvaborges@gmail.com',
@@ -72,14 +86,42 @@ def setRunCfg(b, type='mpi_bulletin'):
                     'custom': '#SBATCH --mem=512G\n#SBATCH --export=ALL\n#SBATCH --partition=large-shared',
                     'skip': True}
 
+    elif type == 'hpc_slurm_Cineca_debug':
+        b.runCfg = {'type': 'hpc_slurm',
+                    'allocation': 'icei_H_King',
+                    'partition': 'g100_usr_prod',
+                    'walltime': '4:00:00',
+                    'nodes': 2,
+                    'coresPerNode': 48,
+                    'email': 'fernandodasilvaborges@gmail.com',
+                    'folder': '/g100/home/userexternal/fborges0/S1_HFO/sim/',
+                    'script': 'init.py',
+                    'mpiCommand': 'mpirun',
+                    'custom': '#SBATCH --export=ALL\n#SBATCH --partition=g100_usr_prod\n#SBATCH --qos=g100_qos_dbg',
+                    'skip': True}
+        
+    elif type == 'hpc_slurm_Cineca':
+        b.runCfg = {'type': 'hpc_slurm',
+                    'allocation': 'icei_H_King',
+                    'partition': 'g100_usr_prod',
+                    'walltime': '24:00:00',
+                    'nodes': 35,
+                    'coresPerNode': 48,
+                    'email': 'fernandodasilvaborges@gmail.com',
+                    'folder': '/g100/home/userexternal/fborges0/S1_HFO/sim/',
+                    'script': 'init.py',
+                    'mpiCommand': 'mpirun',
+                    'custom': '#SBATCH --export=ALL\n#SBATCH --partition=g100_usr_prod\n#SBATCH --qos=g100_qos_bprod',
+                    'skip': True}
+        
 # ----------------------------------------------------------------------------------------------
 # Main code
 # ----------------------------------------------------------------------------------------------
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v120_batch1'  
+    b.batchLabel = 'v200_batch0'  
     b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
-    setRunCfg(b, 'hpc_slurm_Expanse') # setRunCfg(b, 'hpc_slurm_Expanse')
+    setRunCfg(b, 'mpi_direct') # setRunCfg(b, 'hpc_slurm_Cineca_debug') # setRunCfg(b, 'hpc_slurm_Expanse')
     b.run() # run batch
