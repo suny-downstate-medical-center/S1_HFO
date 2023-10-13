@@ -118,7 +118,7 @@ for cellLabel in spkTimes.keys():
 
 #------------------------------------------------------------------------------
 cfg.cynradNumber = 1
-cfg.fracmorphoradius = 1.0/50.0
+cfg.fracmorphoradius = 1.0/10.0
 
 excluderadius2a = (cfg.cynradNumber-1)*(0.5*cfg.fracmorphoradius)**2
 excluderadius2b = (cfg.cynradNumber)*(0.5*cfg.fracmorphoradius)**2
@@ -214,7 +214,7 @@ cfg.recordStep = 0.5
 
 # cfg.saveLFPPops =  cfg.recordCells 
 
-cfg.recordLFP = [[0, y, 0] for y in [1000, 2000]] # 1 elec in L1 and 3 elec in L5  
+cfg.recordLFP = [[0, y, 0] for y in [500, 1000, 1500, 2000]] # 1 elec in L1 and 3 elec in L5  
 
 #------------------------------------------------------------------------------
 # Saving
