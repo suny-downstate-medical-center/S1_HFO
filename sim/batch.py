@@ -72,7 +72,7 @@ def setRunCfg(b, type='mpi_bulletin'):
                     'custom': '#SBATCH --mem=249325M\n#SBATCH --export=ALL\n#SBATCH --partition=debug',
                     'skip': True}
 
-    elif type == 'hpc_slurm_Expanse':
+    elif type == 'hpc_slurm_largeExpanse':
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'TG-IBN140002',
                     'partition': 'large-shared',
@@ -85,7 +85,21 @@ def setRunCfg(b, type='mpi_bulletin'):
                     'mpiCommand': 'mpirun',
                     'custom': '#SBATCH --mem=512G\n#SBATCH --export=ALL\n#SBATCH --partition=large-shared',
                     'skip': True}
-
+        
+    elif type == 'hpc_slurm_Expanse':
+        b.runCfg = {'type': 'hpc_slurm',
+                    'allocation': 'TG-IBN140002',
+                    'partition': 'compute',
+                    'walltime': '1:00:00',
+                    'nodes': 1,
+                    'coresPerNode': 128,
+                    'email': 'fernandodasilvaborges@gmail.com',
+                    'folder': '/home/fborges/S1_HFO/sim/',
+                    'script': 'init.py',
+                    'mpiCommand': 'mpirun',
+                    'custom': '#SBATCH --mem=249325M\n#SBATCH --export=ALL\n#SBATCH --partition=compute',
+                    'skip': True}
+        
     elif type == 'hpc_slurm_Cineca_debug':
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'icei_H_King',
@@ -123,5 +137,5 @@ if __name__ == '__main__':
     b.batchLabel = 'v200_batch0'  
     b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
-    setRunCfg(b, 'hpc_slurm_Cineca_debug') # setRunCfg(b, 'hpc_slurm_Cineca_debug') # setRunCfg(b, 'hpc_slurm_Expanse')
+    setRunCfg(b, 'hpc_slurm_Expanse') # setRunCfg(b, 'hpc_slurm_Cineca_debug') # setRunCfg(b, 'hpc_slurm_Expanse')
     b.run() # run batch
