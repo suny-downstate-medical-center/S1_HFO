@@ -772,5 +772,6 @@ netParams.description = """
 - v108 - 'e_GABAA': -80.0 (but excitatory-excitatory L5 conn 1.50*strength basal)
 - v109 - v101 with more cell traces recorded
 - v110 - only L5 + stim 200Hz
-- v120 - == v101 with  "cfg.epileptic_tissue = " True or False option
+- v120 - == v101 with  "cfg.epileptic_tissue = True " 
+- v121 - == v101 with  "cfg.epileptic_tissue = False " 
 """
