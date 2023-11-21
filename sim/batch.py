@@ -38,12 +38,12 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'mpi_direct',
             'cores': 8,
             'script': 'init.py',
-            'mpiCommand': 'mpiexec', # --use-hwthread-cpus
+            'mpiCommand': 'mpirun', # --use-hwthread-cpus
             'skip': True}
 
     elif type=='mpi_direct2':
         b.runCfg = {'type': 'mpi_direct',
-            'mpiCommand': 'mpirun --use-hwthread-cpus -n 8 ./x86_64/special -mpi -python init.py', # --use-hwthread-cpus
+            'mpiCommand': 'mpirun -n 8 ./x86_64/special -mpi -python init.py', # --use-hwthread-cpus
             'skip': True}
 
     elif type=='hpc_slurm_gcp':
@@ -118,13 +118,13 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'icei_H_King',
                     'partition': 'g100_usr_prod',
-                    'walltime': '24:00:00',
+                    'walltime': '4:00:00',
                     'nodes': 35,
                     'coresPerNode': 48,
                     'email': 'fernandodasilvaborges@gmail.com',
                     'folder': '/g100/home/userexternal/fborges0/S1_HFO/sim/',
                     'script': 'init.py',
-                    'mpiCommand': 'mpirun',
+                    'mpiCommand': 'srun ./x86_64/special',
                     'custom': '#SBATCH --export=ALL\n#SBATCH --partition=g100_usr_prod\n#SBATCH --qos=g100_qos_bprod',
                     'skip': True}
         
@@ -134,8 +134,8 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v200_batch0'  
+    b.batchLabel = 'v120_batch1'  
     b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
-    setRunCfg(b, 'hpc_slurm_Expanse') # setRunCfg(b, 'hpc_slurm_Cineca_debug') # setRunCfg(b, 'hpc_slurm_Expanse')
+    setRunCfg(b, 'hpc_slurm_Cineca') # setRunCfg(b, 'hpc_slurm_Cineca_debug') # setRunCfg(b, 'hpc_slurm_Expanse')
     b.run() # run batch

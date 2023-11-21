@@ -182,19 +182,6 @@ for cellName in cfg.S1cells:
             if 'ions' in netParams.cellParams[cellMe]['secs'][section].keys():
                 if 'ca' in netParams.cellParams[cellMe]['secs'][section]['ions'].keys():
                     netParams.cellParams[cellMe]['secs'][section]['ions']['ca']['o'] = cfg.cao_secs      
-                    
-            randRotationAngle = 2.0*np.pi*np.random.rand() # np.pi/2.0  # rand.uniform(0, 6.2832)  #    
-        
-            #  Rotate the cell in the Z axis
-            for ipt, pt3d in enumerate(netParams.cellParams[cellMe]['secs'][section]['geom']['pt3d']):                
-                x = pt3d[0]             
-                y = pt3d[1]
-                z = pt3d[2]
-                d = pt3d[3]
-                c = np.cos(randRotationAngle)
-                s = np.sin(randRotationAngle)        
-
-                netParams.cellParams[cellMe]['secs'][section]['geom']['pt3d'][ipt] = (x * c - z * s, y, x * s + z * c, d)
 
 #------------------------------------------------------------------------------
 # load data from S1 conn pre-processing file 
@@ -314,7 +301,7 @@ for syntype in syntypes:
                                             }
         
         netParams.synMechParams['S1_IEL5_STP_Det_' + str(syntype)] = {'mod': 'DetGABAAB',
-                                         'Use': dfS6['use'][syntype], # ± dfS6['useStd'][syntype]
+                                         'Use': dfS6['use'][syntype]*cfg.use_frac['Inh'], # ± dfS6['useStd'][syntype]
                                          'Dep': dfS6['dep'][syntype], # ± dfS6['depStd'][syntype]  
                                          'Fac': dfS6['fac'][syntype], # ± dfS6['facStd'][syntype]
                                          'tau_d_GABAA': dfS6['decay'][syntype], # ± dfS6['decayStd'][syntype]
