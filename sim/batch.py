@@ -17,7 +17,7 @@ def custom():
     
     # params[('seeds', 'stim')] =  [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009]
 
-    params[('seeds', 'stim')] =  [1000]
+    params[('seeds', 'stim')] =  [1000, 1001]
     
     # params[('fracmorphoradius')] = [1.0/2.0]
 
@@ -118,7 +118,7 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'icei_H_King',
                     'partition': 'g100_usr_prod',
-                    'walltime': '4:00:00',
+                    'walltime': '3:00:00',
                     'nodes': 35,
                     'coresPerNode': 48,
                     'email': 'fernandodasilvaborges@gmail.com',
@@ -134,7 +134,7 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v120_batch1'  
+    b.batchLabel = 'v122_batch1'  
     b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
     setRunCfg(b, 'hpc_slurm_Cineca') # setRunCfg(b, 'hpc_slurm_Cineca_debug') # setRunCfg(b, 'hpc_slurm_Expanse')

@@ -308,7 +308,7 @@ for syntype in syntypes:
                                          'tau_r_GABAA': 0.2,   #rng.lognormal(0.2, 0.1) in synapses.hoc  
                                          'tau_d_GABAB': 260.9,
                                          'tau_r_GABAB': 3.5,
-                                         'e_GABAA': -80.0, #= -80   (mV) : GABAA reversal potential  
+                                         'e_GABAA': -70.0, #= -80   (mV) : GABAA reversal potential  
                                             }
 
 # Th NEW
@@ -547,7 +547,7 @@ if cfg.addConn:
                             'sec': 'spinyEE'}    
 
                         if 'L5' == pre[0:2] and 'L5' == post[0:2]:   
-                            netParams.connParams['EE_'+pre+'_'+post]['weight'] = 1.0 * parameters_syn['gsyn',connID]
+                            netParams.connParams['EE_'+pre+'_'+post]['weight'] = 1.25 * parameters_syn['gsyn',connID]
     
                         netParams.connParams['VS_'+'EE_'+pre+'_'+post] = { 
                             'preConds': {'pop': ['presyn_'+metypeVs for metypeVs in cfg.popLabelEl[pre]]}, 
@@ -772,6 +772,7 @@ netParams.description = """
 - v108 - 'e_GABAA': -80.0 (but excitatory-excitatory L5 conn 1.50*strength basal)
 - v109 - v101 with more cell traces recorded
 - v110 - only L5 + stim 200Hz
-- v120 - == v101 with  "cfg.epileptic_tissue = True " 
-- v121 - == v101 with  "cfg.epileptic_tissue = False " 
+- v120 - == v101
+- v121 - test LFP "cfg.epileptic_tissue = False " 
+- v122 - 'e_GABAA': -70.0 (only to excitatory L5 neurons) and excitatory-excitatory L5 conn 1.25*strength basal
 """
