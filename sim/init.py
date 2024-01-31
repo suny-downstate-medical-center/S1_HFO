@@ -83,3 +83,5 @@ sim.analysis.plotData()         			# plot spike raster etc
 #         print('\n\n',pops,'  N =',cfg.cellNumber[pops])
 #         sim.analysis.plotTraces(include=[pops], timeRange=[1000,2000], overlay=True, oneFigPer='trace', subtitles=False, legend=False, ylim=[-90,20], axis=False, scaleBarLoc=3, figSize=(24, 12), fontSize=15, saveFig='../data/'+cfg.simLabel[0:11]+'/'+cfg.simLabel + '_' + pops+ '_Vt.png');
             
+sim.analysis.plot2Dnet(**{'include': ['presyn_L23_PC_cAD','presyn_L5_TTPC2_cAD','presyn_L5_LBC_dST', 'presyn_VPM_sTC','L5_TTPC2_cAD','L5_LBC_dST'],
+                          'saveFig':  '../data/'+cfg.simLabel[0:12]+'/'+cfg.simLabel + '_' +'plot2Dnet_xy.png', 'showConns': False, 'figSize': (24,24), 'view': 'xy', 'fontSize':16})   # Plot 2D cells xy

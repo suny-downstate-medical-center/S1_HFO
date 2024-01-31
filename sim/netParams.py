@@ -161,22 +161,23 @@ for cellName in cfg.S1cells:
             netParams.cellParams[cellMe] = cellRule   # add dict to list of cell params   
 
         #-----------------------------------------------------------------------------------#
-        axon_pt3d_x, axon_pt3d_y, axon_pt3d_z, soma_pt3d_diam =  netParams.cellParams[cellMe]['secs']['soma']['geom']['pt3d'][-1]
-        axon_pt3d_diam =  netParams.cellParams[cellMe]['secs']['axon_0']['geom']['diam']
-        axon_pt3d_L =  netParams.cellParams[cellMe]['secs']['axon_0']['geom']['L']
+        else:
+            axon_pt3d_x, axon_pt3d_y, axon_pt3d_z, soma_pt3d_diam =  netParams.cellParams[cellMe]['secs']['soma']['geom']['pt3d'][-1]
+            axon_pt3d_diam =  netParams.cellParams[cellMe]['secs']['axon_0']['geom']['diam']
+            axon_pt3d_L =  netParams.cellParams[cellMe]['secs']['axon_0']['geom']['L']
 
-        netParams.cellParams[cellMe]['secs']['axon_0']['geom']['pt3d'] = [(axon_pt3d_x, axon_pt3d_y, axon_pt3d_z, axon_pt3d_diam),
-                                                                          (axon_pt3d_x, axon_pt3d_y+axon_pt3d_L/2.0, axon_pt3d_z, axon_pt3d_diam),
-                                                                          (axon_pt3d_x, axon_pt3d_y+axon_pt3d_L, axon_pt3d_z, axon_pt3d_diam)]
+            netParams.cellParams[cellMe]['secs']['axon_0']['geom']['pt3d'] = [(axon_pt3d_x, axon_pt3d_y, axon_pt3d_z, axon_pt3d_diam),
+                                                                            (axon_pt3d_x, axon_pt3d_y+axon_pt3d_L/2.0, axon_pt3d_z, axon_pt3d_diam),
+                                                                            (axon_pt3d_x, axon_pt3d_y+axon_pt3d_L, axon_pt3d_z, axon_pt3d_diam)]
 
-        axon1_pt3d_x, axon1_pt3d_y, axon1_pt3d_z, soma_pt3d_diam =  netParams.cellParams[cellMe]['secs']['axon_0']['geom']['pt3d'][-1]
-        axon1_pt3d_diam =  netParams.cellParams[cellMe]['secs']['axon_1']['geom']['diam']
-        axon1_pt3d_L =  netParams.cellParams[cellMe]['secs']['axon_1']['geom']['L']
+            axon1_pt3d_x, axon1_pt3d_y, axon1_pt3d_z, soma_pt3d_diam =  netParams.cellParams[cellMe]['secs']['axon_0']['geom']['pt3d'][-1]
+            axon1_pt3d_diam =  netParams.cellParams[cellMe]['secs']['axon_1']['geom']['diam']
+            axon1_pt3d_L =  netParams.cellParams[cellMe]['secs']['axon_1']['geom']['L']
 
-        netParams.cellParams[cellMe]['secs']['axon_1']['geom']['pt3d'] = [(axon1_pt3d_x, axon1_pt3d_y, axon1_pt3d_z, axon1_pt3d_diam),
-                                                                          (axon1_pt3d_x, axon1_pt3d_y+axon1_pt3d_L/2.0, axon1_pt3d_z, axon1_pt3d_diam),
-                                                                          (axon1_pt3d_x, axon1_pt3d_y+axon1_pt3d_L, axon1_pt3d_z, axon1_pt3d_diam)] 
-        
+            netParams.cellParams[cellMe]['secs']['axon_1']['geom']['pt3d'] = [(axon1_pt3d_x, axon1_pt3d_y, axon1_pt3d_z, axon1_pt3d_diam),
+                                                                            (axon1_pt3d_x, axon1_pt3d_y+axon1_pt3d_L/2.0, axon1_pt3d_z, axon1_pt3d_diam),
+                                                                            (axon1_pt3d_x, axon1_pt3d_y+axon1_pt3d_L, axon1_pt3d_z, axon1_pt3d_diam)] 
+            
         #-----------------------------------------------------------------------------------#        
         for section in netParams.cellParams[cellMe]['secLists']['all']:
             if 'ions' in netParams.cellParams[cellMe]['secs'][section].keys():
@@ -308,7 +309,7 @@ for syntype in syntypes:
                                          'tau_r_GABAA': 0.2,   #rng.lognormal(0.2, 0.1) in synapses.hoc  
                                          'tau_d_GABAB': 260.9,
                                          'tau_r_GABAB': 3.5,
-                                         'e_GABAA': -70.0, #= -80   (mV) : GABAA reversal potential  
+                                         'e_GABAA': -80.0, #= -80   (mV) : GABAA reversal potential  
                                             }
 
 # Th NEW
@@ -547,7 +548,7 @@ if cfg.addConn:
                             'sec': 'spinyEE'}    
 
                         if 'L5' == pre[0:2] and 'L5' == post[0:2]:   
-                            netParams.connParams['EE_'+pre+'_'+post]['weight'] = 1.25 * parameters_syn['gsyn',connID]
+                            netParams.connParams['EE_'+pre+'_'+post]['weight'] = 1.0 * parameters_syn['gsyn',connID]
     
                         netParams.connParams['VS_'+'EE_'+pre+'_'+post] = { 
                             'preConds': {'pop': ['presyn_'+metypeVs for metypeVs in cfg.popLabelEl[pre]]}, 
@@ -775,4 +776,5 @@ netParams.description = """
 - v120 - == v101
 - v121 - test LFP "cfg.epileptic_tissue = False " 
 - v122 - 'e_GABAA': -70.0 (only to excitatory L5 neurons) and excitatory-excitatory L5 conn 1.25*strength basal
+- v1000 - only L5 morpho with 'e_GABAA': -80.0 and 1.0*strength
 """
